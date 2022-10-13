@@ -1,0 +1,126 @@
+{%extends 'partials/base.html' %}
+
+
+{% block title %} Home  Page{% endblock %}
+{% block content%}
+
+{% if user.is_authenticated and user.is_staff and user.is_superuser %}
+
+{% include 'partials/topside.html' %}
+
+
+  <!-- Chart.js Section (Graphs) -->
+  <div class="container">
+    <div class="row my-5">
+      <div class="col-md-6">
+        <div class="bg-white">
+        <canvas id="myChart1" width="400" height="300"></canvas>
+        <script>
+        var ctx = document.getElementById('myChart1').getContext('2d');
+        var myChart1 = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: [{% for product in products %}'{{product.name }}', {% endfor %}],
+                datasets: [{
+                    label: 'Products',
+                    data: [{% for product in products %} '{{product.quantity}}', {% endfor %}],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.9)',
+                        'rgba(5, 199, 12, 0.9)',
+
+                        'rgba(54, 162, 235, 0.9)',
+                        'rgba(255, 206, 86, 0.9)',
+                        'rgba(75, 192, 192, 0.9)',
+                        'rgba(153, 102, 255, 0.9)',
+                        'rgba(255, 159, 64, 0.9)',
+                        'rgba(25, 15, 4,23, 0.9)',
+                        'rgba(250, 109, 164, 0.9)'
+
+
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(5, 199, 12, 1)',
+
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(25, 15, 4, 23,1)',
+                        'rgba(250, 109, 164, 0.9)',
+
+
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+        </script>
+        </div>
+               </div>
+      <div class="col-md-6">
+        <div class="bg-white">
+        <canvas id="myChart2" width="400" height="300"></canvas>
+        <script>
+        var ctx = document.getElementById('myChart2').getContext('2d');
+        var myChart2 = new Chart(ctx, {
+            type: 'bar',
+            data: {
+
+
+                labels: [{% for order in orders %}'{{order.product.name}}',{% endfor %}],
+                datasets: [{
+                    label: 'Orders',
+                    data: [{% for order in orders %}'{{order.order_quantity}}',{% endfor %}],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 34, 1)',
+                        'rgba(205, 112, 4, 1)',
+                        'rgba(125, 90, 24, 1)',
+                        'rgba(225, 59, 74, 1)'
+
+
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(125, 90, 24, 1)',
+                        'rgba(255, 159, 64, 1)',
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+        </script>
+        </div>
+               </div>
+    </div>
+  </div>
+{%else%}
+{% include 'dashboard/staff_index.html' %}
+
+
+{% endif %}
+{% endblock %}
